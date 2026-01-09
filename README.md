@@ -1,12 +1,34 @@
 # AffinityOnLinux
 
+> **ℹ️ NOTE from forker @fazzaan**  
+> All credit goes to the original creator, [@ryzendew](https://github.com/ryzendew). [[original repo]](https://github.com/ryzendew/Linux-Affinity-Installer)
+> 
+> This is a fork simply to add Garuda Linux support to the Linux python installation script, because the original script wouldn't let me install it on Garuda.
+> 
+> * Link to github file: [AffinityScripts/AffinityLinuxInstaller.py](https://github.com/fazzaan/Linux-Affinity-Installer/blob/main/AffinityScripts/AffinityLinuxInstaller.py)  
+> * Link to raw python3 file: [https://raw.githubusercontent.com/fazzaan/Linux-Affinity-Installer/refs/heads/main/AffinityScripts/AffinityLinuxInstaller.py](https://raw.githubusercontent.com/fazzaan/Linux-Affinity-Installer/refs/heads/main/AffinityScripts/AffinityLinuxInstaller.py)
+> 
+> I have not done anything except add `"garuda"` to the various statements that check which OS you are using. All such statements are set to copy the Arch-based distros.
+> 
+> Everything else in this repo, including this ReadMe page, is identical to [ryzendew's repo](https://github.com/ryzendew/Linux-Affinity-Installer).
+> 
+> Note that the original in-repo URLs link to the files in my fork. This is normal behaviour and they will be updated when I sync my fork with the [original repo](https://github.com/ryzendew/Linux-Affinity-Installer).
+> 
+> Any of my edits shall be marked clearly.  
+>   
+> ### NOTE THAT YOU USE THIS AT YOUR OWN RISK AND NEITHER @RYZENDEW NOR I CAN SUPPORT YOU.  
+> I simply created this as a hack for myself, and figured it might be useful for others.  
+>  
+> I can try to add or tweak other things in the script if you submit an issue.  
+
+## Original ReadMe from dev @ryzendew 
 > **⚠️ IMPORTANT: Before Opening Issues**
 > 
 > **DO NOT open GitHub issues until you have:**
 > - Read this README completely
 > - Read all documentation pages (Installation Guide, Known Issues, System Requirements, etc.)
 > - Searched existing issues for similar problems
-> - Checked the [Known Issues](docs/Known-issues.md) page
+> - Checked the [Known Issues](https://github.com/ryzendew/Linux-Affinity-Installer/blob/main/docs/Known-issues.md) page _((links to @ryzendew's repo))_  
 > 
 > **Issues opened without reading the documentation will be closed immediately.**
 > 
@@ -32,6 +54,15 @@ AffinityOnLinux provides an easy way to install and run Affinity Photo, Designer
 
 **Want full features and latest updates?** Use the Python GUI Installer:
 
+#### Edit from me @fazzaan 
+> This is the updated script with support added for Garuda Linux.  
+> I'm not a developer but I have run this on my own Garuda Linux system with success, and Affinity is running now.  
+> Check my edits here: [AffinityScripts/AffinityLinuxInstaller.py](https://github.com/fazzaan/Linux-Affinity-Installer/blob/main/AffinityScripts/AffinityLinuxInstaller.py)  
+> ```bash
+> curl -sSL https://raw.githubusercontent.com/fazzaan/Linux-Affinity-Installer/refs/heads/main/AffinityScripts/AffinityLinuxInstaller.py | python3
+> ```
+
+#### Original from @ryzendew
 ```bash
 curl -sSL https://raw.githubusercontent.com/ryzendew/AffinityOnLinux/refs/heads/main/AffinityScripts/AffinityLinuxInstaller.py | python3
 ```
