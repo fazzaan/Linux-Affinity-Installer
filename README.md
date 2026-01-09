@@ -1,5 +1,8 @@
 # AffinityOnLinux
 
+_Hi @ryzendew if you see this -- I made this before reading [your Contributions guidelines](https://github.com/ryzendew/Linux-Affinity-Installer/blob/main/docs/CONTRIBUTING.md)!_  
+_I'll follow the guidelines later when I have time._  
+  
 > **ℹ️ NOTE from forker @fazzaan**  
 > All credit goes to the original creator, [@ryzendew](https://github.com/ryzendew). [[original repo]](https://github.com/ryzendew/Linux-Affinity-Installer)
 > 
