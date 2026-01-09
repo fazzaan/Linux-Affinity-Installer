@@ -30,8 +30,6 @@ def detect_distro_for_install():
                 distro = line.split("=", 1)[1].strip().strip('"').lower()
                 if distro == "pika":
                     distro = "pikaos"
-                elif distro == "garuda": 
-                    distro = "endeavouros" # a horrible hack, I'm sorry
                 return distro
     except (IOError, FileNotFoundError):
         pass
@@ -50,7 +48,7 @@ def install_package(package_name, import_name=None):
         
         distro = detect_distro_for_install()
         pip_flags = ["--user"]
-        if distro in ["arch", "cachyos", "manjaro", "endeavouros", "xerolinux"]:
+        if distro in ["arch", "cachyos", "manjaro", "endeavouros", "xerolinux", "garuda"]:
             pip_flags.append("--break-system-packages")
         if not sys.stdout.isatty():
             pip_flags.insert(0, "--quiet")
@@ -139,7 +137,7 @@ if not PYQT6_AVAILABLE:
     print("Using pip:")
     print("  pip install --user PyQt6")
     print("\nOr using your distribution's package manager:")
-    print("  Arch/CachyOS/EndeavourOS/XeroLinux: sudo pacman -S python-pyqt6")
+    print("  Arch/CachyOS/EndeavourOS/XeroLinux/Garuda: sudo pacman -S python-pyqt6")
     print("  Fedora/Nobara: sudo dnf install python3-pyqt6")
     print("  Debian/Ubuntu/Mint/Pop/Zorin/PikaOS: sudo apt install python3-pyqt6")
     print("  openSUSE: sudo zypper install python313-PyQt6")
@@ -6104,6 +6102,7 @@ class AffinityInstallerGUI(QMainWindow):
             "cachyos": "CachyOS",
             "endeavouros": "EndeavourOS",
             "xerolinux": "XeroLinux",
+            "garuda": "Garuda",
             "fedora": "Fedora",
             "nobara": "Nobara",
             "opensuse-tumbleweed": "openSUSE Tumbleweed",
@@ -6842,7 +6841,7 @@ class AffinityInstallerGUI(QMainWindow):
             self.log(".NET SDK is installed", "success")
         
         # Handle unsupported distributions - show warning and allow retry
-        if self.distro in ["ubuntu", "linuxmint", "pop", "zorin", "bazzite"]:
+        if self.distro in ["ubuntu", "linuxmint", "pop", "zorin", "bazzite", "garuda"]:
             if missing:
                 self.log("\n" + "="*80, "error")
                 self.log("⚠️  WARNING: UNSUPPORTED DISTRIBUTION", "error")
@@ -6873,7 +6872,7 @@ class AffinityInstallerGUI(QMainWindow):
                 self.log("No support will be provided if issues arise.", "warning")
         
         # Install missing dependencies (only for supported distributions)
-        if missing and self.distro not in ["ubuntu", "linuxmint", "pop", "zorin", "bazzite"]:
+        if missing and self.distro not in ["ubuntu", "linuxmint", "pop", "zorin", "bazzite", "garuda"]:
             self.log(f"\nInstalling missing dependencies: {', '.join(missing)}", "info")
             self.update_progress_text(f"Installing {len(missing)} missing packages...")
             self.update_progress(0.5)  # Start second half of progress
@@ -6956,6 +6955,7 @@ class AffinityInstallerGUI(QMainWindow):
             "cachyos": ["sudo", "pacman", "-S", "--needed", "--noconfirm", "wine", "winetricks", "wget", "curl", "p7zip", "tar", "jq", "zstd", "dotnet-sdk-8.0"],
             "endeavouros": ["sudo", "pacman", "-S", "--needed", "--noconfirm", "wine", "winetricks", "wget", "curl", "p7zip", "tar", "jq", "zstd", "dotnet-sdk-8.0"],
             "xerolinux": ["sudo", "pacman", "-S", "--needed", "--noconfirm", "wine", "winetricks", "wget", "curl", "p7zip", "tar", "jq", "zstd", "dotnet-sdk-8.0"],
+            "garuda": ["sudo", "pacman", "-S", "--needed", "--noconfirm", "wine", "winetricks", "wget", "curl", "p7zip", "tar", "jq", "zstd", "dotnet-sdk-8.0"],
             "fedora": ["sudo", "dnf", "install", "-y", "wine", "winetricks", "wget", "curl", "p7zip", "p7zip-plugins", "tar", "jq", "zstd", "dotnet-sdk-8.0"],
             "nobara": ["sudo", "dnf", "install", "-y", "wine", "winetricks", "wget", "curl", "p7zip", "p7zip-plugins", "tar", "jq", "zstd", "dotnet-sdk-8.0"],
             "opensuse-tumbleweed": ["sudo", "zypper", "install", "-y", "wine", "winetricks", "wget", "curl", "p7zip", "tar", "jq", "zstd", "dotnet-sdk-8.0"],
@@ -9528,7 +9528,7 @@ class AffinityInstallerGUI(QMainWindow):
                 "Wine Not Installed",
                 "System Wine is required for WebView2 Runtime installation.\n\n"
                 "Please install Wine using your distribution's package manager:\n"
-                "  • Arch/CachyOS/EndeavourOS/XeroLinux: sudo pacman -S wine\n"
+                "  • Arch/CachyOS/EndeavourOS/XeroLinux/Garuda: sudo pacman -S wine\n"
                 "  • Fedora/Nobara: sudo dnf install wine\n"
                 "  • PikaOS: sudo apt install wine"
             )
@@ -10967,7 +10967,7 @@ class AffinityInstallerGUI(QMainWindow):
                         install_cmd = ["sudo", "dnf", "install", "-y"] + amd_deps
                     
                     # Arch-based distributions
-                    elif self.distro in ["arch", "cachyos", "endeavouros", "xerolinux"]:
+                    elif self.distro in ["arch", "cachyos", "endeavouros", "xerolinux", "garuda"]:
                         amd_deps = ["opencl-mesa", "ocl-icd", "rocm-opencl-runtime", "rocm-hip", "wine-opencl"]
                         self.log(f"{self.format_distro_name()} detected - installing Arch-based AMD OpenCL dependencies...", "info")
                         install_cmd = ["sudo", "pacman", "-S", "--needed", "--noconfirm"] + amd_deps
@@ -11137,7 +11137,7 @@ class AffinityInstallerGUI(QMainWindow):
                                 self.log(f".NET SDK 10.0+ package found via dnf: {line.split()[0]}", "success")
                                 return True
         
-        elif self.distro in ["arch", "cachyos", "endeavouros", "xerolinux"]:
+        elif self.distro in ["arch", "cachyos", "endeavouros", "xerolinux", "garuda"]:
             success, stdout, _ = self.run_command(
                 ["pacman", "-Q"],
                 check=False,
@@ -11260,7 +11260,7 @@ class AffinityInstallerGUI(QMainWindow):
                                 self.log("You may need to add /usr/bin to your PATH or restart your terminal", "info")
                                 return True  # Return True anyway since package is installed
         
-        elif self.distro in ["arch", "cachyos", "endeavouros", "xerolinux"]:
+        elif self.distro in ["arch", "cachyos", "endeavouros", "xerolinux", "garuda"]:
             # Check for any dotnet-sdk package via pacman
             # Query all installed packages and filter for dotnet-sdk
             success, stdout, _ = self.run_command(
@@ -11819,7 +11819,7 @@ class AffinityInstallerGUI(QMainWindow):
                 self.log("You can install .NET SDK manually:", "info")
                 if self.distro in ["arch", "cachyos"]:
                     self.log("  sudo pacman -S dotnet-sdk-8.0", "info")
-                elif self.distro in ["endeavouros", "xerolinux"]:
+                elif self.distro in ["endeavouros", "xerolinux", "garuda"]:
                     self.log("  sudo pacman -S dotnet-sdk-8.0", "info")
                 elif self.distro in ["fedora", "nobara"]:
                     self.log("  sudo dnf install dotnet-sdk-8.0", "info")
@@ -11999,7 +11999,7 @@ class AffinityInstallerGUI(QMainWindow):
             self.show_message(
                 "Winetricks Not Found",
                 "Winetricks is not installed. Please install it using:\n\n"
-                "Arch/CachyOS/EndeavourOS/XeroLinux: sudo pacman -S winetricks\n"
+                "Arch/CachyOS/EndeavourOS/XeroLinux/Garuda: sudo pacman -S winetricks\n"
                 "Fedora/Nobara: sudo dnf install winetricks\n"
                 "Debian/Ubuntu/Mint/Pop/Zorin/PikaOS: sudo apt install winetricks\n"
                 "openSUSE: sudo zypper install winetricks",
@@ -12547,6 +12547,7 @@ class AffinityInstallerGUI(QMainWindow):
                 "cachyos": ["sudo", "pacman", "-S", "--needed", "--noconfirm", "dotnet-sdk-8.0"],
                 "endeavouros": ["sudo", "pacman", "-S", "--needed", "--noconfirm", "dotnet-sdk-8.0"],
                 "xerolinux": ["sudo", "pacman", "-S", "--needed", "--noconfirm", "dotnet-sdk-8.0"],
+                "garuda": ["sudo", "pacman", "-S", "--needed", "--noconfirm", "dotnet-sdk-8.0"],
                 "fedora": ["sudo", "dnf", "install", "-y", "dotnet-sdk-8.0"],
                 "nobara": ["sudo", "dnf", "install", "-y", "dotnet-sdk-8.0"],
                 "opensuse-tumbleweed": ["sudo", "zypper", "install", "-y", "dotnet-sdk-8.0"],
@@ -12617,7 +12618,7 @@ class AffinityInstallerGUI(QMainWindow):
             if self.distro in ["arch", "cachyos"]:
                 self.log("  sudo pacman -S dotnet-sdk-10.0", "info")
                 install_instructions = "sudo pacman -S dotnet-sdk-10.0"
-            elif self.distro in ["endeavouros", "xerolinux"]:
+            elif self.distro in ["endeavouros", "xerolinux", "garuda"]:
                 self.log("  sudo pacman -S dotnet-sdk-10.0", "info")
                 install_instructions = "sudo pacman -S dotnet-sdk-10.0"
             elif self.distro in ["fedora", "nobara"]:
@@ -12707,7 +12708,7 @@ class AffinityInstallerGUI(QMainWindow):
                         self.log("Please install .NET SDK manually:", "info")
                         if self.distro in ["arch", "cachyos"]:
                             self.log("  sudo pacman -S dotnet-sdk-8.0", "info")
-                        elif self.distro in ["endeavouros", "xerolinux"]:
+                        elif self.distro in ["endeavouros", "xerolinux", "garuda"]:
                             self.log("  sudo pacman -S dotnet-sdk-8.0", "info")
                         elif self.distro in ["fedora", "nobara"]:
                             self.log("  sudo dnf install dotnet-sdk-8.0", "info")
