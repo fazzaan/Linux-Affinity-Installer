@@ -30,6 +30,8 @@ def detect_distro_for_install():
                 distro = line.split("=", 1)[1].strip().strip('"').lower()
                 if distro == "pika":
                     distro = "pikaos"
+                elif distro == "garuda": 
+                    distro = "endeavouros" # a horrible hack, I'm sorry
                 return distro
     except (IOError, FileNotFoundError):
         pass
